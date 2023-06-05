@@ -1,0 +1,339 @@
+/* Minification failed. Returning unminified contents.
+(20,1): run-time error CSS1019: Unexpected token, found '('
+(20,2): run-time error CSS1019: Unexpected token, found 'function('
+(20,12): run-time error CSS1031: Expected selector, found ')'
+(20,12): run-time error CSS1025: Expected comma or open brace, found ')'
+(20,10179): run-time error CSS1019: Unexpected token, found ')'
+(20,10180): run-time error CSS1019: Unexpected token, found '('
+(20,10187): run-time error CSS1031: Expected selector, found ')'
+(20,10187): run-time error CSS1025: Expected comma or open brace, found ')'
+(22,1): run-time error CSS1019: Unexpected token, found '$'
+(22,2): run-time error CSS1019: Unexpected token, found '('
+(22,12): run-time error CSS1031: Expected selector, found '('
+(22,12): run-time error CSS1025: Expected comma or open brace, found '('
+(324,2): run-time error CSS1019: Unexpected token, found ')'
+ */
+/*
+ * jQuery MultiSelect UI Widget 1.13
+ * Copyright (c) 2012 Eric Hynds
+ *
+ * http://www.erichynds.com/jquery/jquery-ui-multiselect-widget/
+ *
+ * Depends:
+ *   - jQuery 1.4.2+
+ *   - jQuery UI 1.8 widget factory
+ *
+ * Optional:
+ *   - jQuery UI effects
+ *   - jQuery UI position utility
+ *
+ * Dual licensed under the MIT and GPL licenses:
+ *   http://www.opensource.org/licenses/mit-license.php
+ *   http://www.gnu.org/licenses/gpl.html
+ *
+ */
+(function(d){var k=0;d.widget("ech.multiselect",{options:{header:!0,height:175,minWidth:225,classes:"",checkAllText:"Check all",uncheckAllText:"Uncheck all",noneSelectedText:"Select options",selectedText:"# selected",selectedList:0,show:null,hide:null,autoOpen:!1,multiple:!0,position:{}},_create:function(){var a=this.element.hide(),b=this.options;this.speed=d.fx.speeds._default;this._isOpen=!1;a=(this.button=d('<button type="button"><span class="ui-icon ui-icon-triangle-2-n-s"></span></button>')).addClass("ui-multiselect ui-widget ui-state-default ui-corner-all").addClass(b.classes).attr({title:a.attr("title"),"aria-haspopup":!0,tabIndex:a.attr("tabIndex")}).insertAfter(a);(this.buttonlabel=d("<span />")).html(b.noneSelectedText).appendTo(a);var a=(this.menu=d("<div />")).addClass("ui-multiselect-menu ui-widget ui-widget-content ui-corner-all").addClass(b.classes).appendTo(document.body),c=(this.header=d("<div />")).addClass("ui-widget-header ui-corner-all ui-multiselect-header ui-helper-clearfix").appendTo(a);(this.headerLinkContainer=d("<ul />")).addClass("ui-helper-reset").html(function(){return!0===b.header?'<li><a class="ui-multiselect-all" href="#"><span class="ui-icon ui-icon-check"></span><span>'+b.checkAllText+'</span></a></li><li><a class="ui-multiselect-none" href="#"><span class="ui-icon ui-icon-closethick"></span><span>'+b.uncheckAllText+"</span></a></li>":"string"===typeof b.header?"<li>"+b.header+"</li>":""}).append('<li class="ui-multiselect-close"><a href="#" class="ui-multiselect-close"><span class="ui-icon ui-icon-circle-close"></span></a></li>').appendTo(c);(this.checkboxContainer=d("<ul />")).addClass("ui-multiselect-checkboxes ui-helper-reset").appendTo(a);this._bindEvents();this.refresh(!0);b.multiple||a.addClass("ui-multiselect-single")},_init:function(){!1===this.options.header&&this.header.hide();this.options.multiple||this.headerLinkContainer.find(".ui-multiselect-all, .ui-multiselect-none").hide();this.options.autoOpen&&this.open();this.element.is(":disabled")&&this.disable()},refresh:function(a){var b=this.element,c=this.options,f=this.menu,h=this.checkboxContainer,g=[],e="",i=b.attr("id")||k++;b.find("option").each(function(b){d(this);var a=this.parentNode,f=this.innerHTML,h=this.title,k=this.value,b="ui-multiselect-"+(this.id||i+"-option-"+b),l=this.disabled,n=this.selected,m=["ui-corner-all"],o=(l?"ui-multiselect-disabled ":" ")+this.className,j;"OPTGROUP"===a.tagName&&(j=a.getAttribute("label"),-1===d.inArray(j,g)&&(e+='<li class="ui-multiselect-optgroup-label '+a.className+'"><a href="#">'+j+"</a></li>",g.push(j)));l&&m.push("ui-state-disabled");n&&!c.multiple&&m.push("ui-state-active");e+='<li class="'+o+'">';e+='<label for="'+b+'" title="'+h+'" class="'+m.join(" ")+'">';e+='<input id="'+b+'" name="multiselect_'+i+'" type="'+(c.multiple?"checkbox":"radio")+'" value="'+k+'" title="'+f+'"';n&&(e+=' checked="checked"',e+=' aria-selected="true"');l&&(e+=' disabled="disabled"',e+=' aria-disabled="true"');e+=" /><span>"+f+"</span></label></li>"});h.html(e);this.labels=f.find("label");this.inputs=this.labels.children("input");this._setButtonWidth();this._setMenuWidth();this.button[0].defaultValue=this.update();a||this._trigger("refresh")},update:function(){var a=this.options,b=this.inputs,c=b.filter(":checked"),f=c.length,a=0===f?a.noneSelectedText:d.isFunction(a.selectedText)?a.selectedText.call(this,f,b.length,c.get()):/\d/.test(a.selectedList)&&0<a.selectedList&&f<=a.selectedList?c.map(function(){return d(this).next().html()}).get().join(", "):a.selectedText.replace("#",f).replace("#",b.length);this.buttonlabel.html(a);return a},_bindEvents:function(){function a(){b[b._isOpen? "close":"open"]();return!1}var b=this,c=this.button;c.find("span").bind("click.multiselect",a);c.bind({click:a,keypress:function(a){switch(a.which){case 27:case 38:case 37:b.close();break;case 39:case 40:b.open()}},mouseenter:function(){c.hasClass("ui-state-disabled")||d(this).addClass("ui-state-hover")},mouseleave:function(){d(this).removeClass("ui-state-hover")},focus:function(){c.hasClass("ui-state-disabled")||d(this).addClass("ui-state-focus")},blur:function(){d(this).removeClass("ui-state-focus")}});this.header.delegate("a","click.multiselect",function(a){if(d(this).hasClass("ui-multiselect-close"))b.close();else b[d(this).hasClass("ui-multiselect-all")?"checkAll":"uncheckAll"]();a.preventDefault()});this.menu.delegate("li.ui-multiselect-optgroup-label a","click.multiselect",function(a){a.preventDefault();var c=d(this),g=c.parent().nextUntil("li.ui-multiselect-optgroup-label").find("input:visible:not(:disabled)"),e=g.get(),c=c.parent().text();!1!==b._trigger("beforeoptgrouptoggle",a,{inputs:e,label:c})&&(b._toggleChecked(g.filter(":checked").length!==g.length,g),b._trigger("optgrouptoggle",a,{inputs:e,label:c,checked:e[0].checked}))}).delegate("label","mouseenter.multiselect",function(){d(this).hasClass("ui-state-disabled")||(b.labels.removeClass("ui-state-hover"),d(this).addClass("ui-state-hover").find("input").focus())}).delegate("label","keydown.multiselect",function(a){a.preventDefault();switch(a.which){case 9:case 27:b.close();break;case 38:case 40:case 37:case 39:b._traverse(a.which,this);break;case 13:d(this).find("input")[0].click()}}).delegate('input[type="checkbox"], input[type="radio"]',"click.multiselect",function(a){var c=d(this),g=this.value,e=this.checked,i=b.element.find("option");this.disabled||!1===b._trigger("click",a,{value:g,text:this.title,checked:e})?a.preventDefault():(c.focus(),c.attr("aria-selected",e),i.each(function(){this.value===g?this.selected=e:b.options.multiple||(this.selected=!1)}),b.options.multiple||(b.labels.removeClass("ui-state-active"),c.closest("label").toggleClass("ui-state-active",e),b.close()),b.element.trigger("change"),setTimeout(d.proxy(b.update,b),10))});d(document).bind("mousedown.multiselect",function(a){b._isOpen&&(!d.contains(b.menu[0],a.target)&&!d.contains(b.button[0],a.target)&&a.target!==b.button[0])&&b.close()});d(this.element[0].form).bind("reset.multiselect",function(){setTimeout(d.proxy(b.refresh,b),10)})},_setButtonWidth:function(){var a=this.element.outerWidth(),b=this.options;/\d/.test(b.minWidth)&&a<b.minWidth&&(a=b.minWidth);this.button.width(a)},_setMenuWidth:function(){var a=this.menu,b=this.button.outerWidth()-parseInt(a.css("padding-left"),10)-parseInt(a.css("padding-right"),10)-parseInt(a.css("border-right-width"),10)-parseInt(a.css("border-left-width"),10);a.width(b||this.button.outerWidth())},_traverse:function(a,b){var c=d(b),f=38===a||37===a,c=c.parent()[f?"prevAll":"nextAll"]("li:not(.ui-multiselect-disabled, .ui-multiselect-optgroup-label)")[f?"last":"first"]();c.length?c.find("label").trigger("mouseover"):(c=this.menu.find("ul").last(),this.menu.find("label")[f? "last":"first"]().trigger("mouseover"),c.scrollTop(f?c.height():0))},_toggleState:function(a,b){return function(){this.disabled||(this[a]=b);b?this.setAttribute("aria-selected",!0):this.removeAttribute("aria-selected")}},_toggleChecked:function(a,b){var c=b&&b.length?b:this.inputs,f=this;c.each(this._toggleState("checked",a));c.eq(0).focus();this.update();var h=c.map(function(){return this.value}).get();this.element.find("option").each(function(){!this.disabled&&-1<d.inArray(this.value,h)&&f._toggleState("selected",a).call(this)});c.length&&this.element.trigger("change")},_toggleDisabled:function(a){this.button.attr({disabled:a,"aria-disabled":a})[a?"addClass":"removeClass"]("ui-state-disabled");var b=this.menu.find("input"),b=a?b.filter(":enabled").data("ech-multiselect-disabled",!0):b.filter(function(){return!0===d.data(this,"ech-multiselect-disabled")}).removeData("ech-multiselect-disabled");b.attr({disabled:a,"arial-disabled":a}).parent()[a?"addClass":"removeClass"]("ui-state-disabled");this.element.attr({disabled:a,"aria-disabled":a})},open:function(){var a=this.button,b=this.menu,c=this.speed,f=this.options,h=[];if(!(!1===this._trigger("beforeopen")||a.hasClass("ui-state-disabled")||this._isOpen)){var g=b.find("ul").last(),e=f.show,i=a.offset();d.isArray(f.show)&&(e=f.show[0],c=f.show[1]||this.speed);e&&(h=[e,c]);g.scrollTop(0).height(f.height);d.ui.position&&!d.isEmptyObject(f.position)?(f.position.of=f.position.of||a,b.show().position(f.position).hide()):b.css({top:i.top+a.outerHeight(),left:i.left});d.fn.show.apply(b,h);this.labels.eq(0).trigger("mouseover").trigger("mouseenter").find("input").trigger("focus");a.addClass("ui-state-active");this._isOpen=!0;this._trigger("open")}},close:function(){if(!1!==this._trigger("beforeclose")){var a=this.options,b=a.hide,c=this.speed,f=[];d.isArray(a.hide)&&(b=a.hide[0],c=a.hide[1]||this.speed);b&&(f=[b,c]);d.fn.hide.apply(this.menu,f);this.button.removeClass("ui-state-active").trigger("blur").trigger("mouseleave");this._isOpen=!1;this._trigger("close")}},enable:function(){this._toggleDisabled(!1)},disable:function(){this._toggleDisabled(!0)},checkAll:function(){this._toggleChecked(!0);this._trigger("checkAll")},uncheckAll:function(){this._toggleChecked(!1);this._trigger("uncheckAll")},getChecked:function(){return this.menu.find("input").filter(":checked")},destroy:function(){d.Widget.prototype.destroy.call(this);this.button.remove();this.menu.remove();this.element.show();return this},isOpen:function(){return this._isOpen},widget:function(){return this.menu},getButton:function(){return this.button},_setOption:function(a,b){var c=this.menu;switch(a){case "header":c.find("div.ui-multiselect-header")[b?"show":"hide"]();break;case "checkAllText":c.find("a.ui-multiselect-all span").eq(-1).text(b);break;case "uncheckAllText":c.find("a.ui-multiselect-none span").eq(-1).text(b);break;case "height":c.find("ul").last().height(parseInt(b,10));break;case "minWidth":this.options[a]=parseInt(b,10);this._setButtonWidth();this._setMenuWidth();break;case "selectedText":case "selectedList":case "noneSelectedText":this.options[a]=b;this.update();break;case "classes":c.add(this.button).removeClass(this.options.classes).addClass(b);break;case "multiple":c.toggleClass("ui-multiselect-single",!b),this.options.multiple=b,this.element[0].multiple=b,this.refresh()}d.Widget.prototype._setOption.apply(this,arguments)}})})(jQuery);
+
+$(function () {
+    var $alBrandsList = $("#alBrandsList");
+    var $alPhoneModelsList = $("#alPhoneModelsList");
+    var $alSubModelsList = $("#alSubModelsList");
+    var $alCountriesList = $("#alCountriesList");
+    var $alCarriersList = $("#alCarriersList");
+    var $alCompatibility = $("#alCompatibility");
+
+    var selectedDevices, selectedSubModels, selectedCarriers, devicesToBeSent, phonesWhichSubModelsNotSelected, isFullChecked, isSubModelSelected, selectedCompatability;
+
+    function getValuesForRoute() {
+        selectedDevices = getValues($alPhoneModelsList).join("|");
+        selectedSubModels = getValues($alSubModelsList).join("|");
+        selectedCarriers = getValues($alCarriersList).join("|");
+
+        devicesToBeSent = selectedDevices;
+
+        phonesWhichSubModelsNotSelected = "";
+        var listOfObjects = [];
+        var phonesArray = selectedDevices.split("|");
+
+        selectedCompatability = $alCompatibility.val();
+        isFullChecked = $("#full-compatibility").is(":checked");
+        isSubModelSelected = getValues($alSubModelsList).length > 0 ? true : false;
+
+
+        // This special section is run to filter out Phones which sub-models have already been selected.
+        // That way we are not going to have duplicate phones in the Phones Array.
+        if (isSubModelSelected) {
+            var submodelsArray = selectedSubModels.split("|");
+            var tempArray = [];
+            var myString = "";
+            var index;
+
+            for (var i = 0; i < submodelsArray.length; i++) {
+                tempArray = submodelsArray[i].split(";");
+                myString = tempArray[0] + ";" + tempArray[1];
+                index = phonesArray.indexOf(myString);
+                if (index > -1) phonesArray.splice(index, 1);
+            }
+
+            /*for (var i = 0; i < phonesArray.length; i++) {
+                var singleObj = {};tempArray = phonesArray[i].split(";"); singleObj['Brand'] = tempArray[0]; singleObj['PhoneModel'] = tempArray[1]; listOfObjects.push(singleObj); ctr++
+            }*/
+
+            if (phonesArray.length > 0) {
+                phonesWhichSubModelsNotSelected = phonesArray.join("|");
+                devicesToBeSent = phonesWhichSubModelsNotSelected;
+                // alert(phonesArray.length + " Devices\n\n" + devicesToBeSent);
+            }
+        }//End of If SubModel Selected
+    }
+
+    // Ajax for Paging
+    var getPageAdv = function () {
+        var $a = $(this);
+
+        if ($a.parent().hasClass("disabled")) return;
+
+        getValuesForRoute();
+
+        var options = {
+            url: $a.attr("href"),
+            data: { phones: devicesToBeSent, submodels: selectedSubModels, carriers: selectedCarriers, compatability: selectedCompatability, full: isFullChecked, subModelSelected: isSubModelSelected },
+            type: "post"
+        };
+
+        $.ajax(options).done(function (data) {
+            var target = $a.parents("div.pagedListAdv").attr("data-wmpw-target");
+            var $newHtml = $(data);
+            $(target).replaceWith($newHtml);
+            $newHtml.effect("highlight");
+            setToolTip();
+        });
+        return false;
+    };
+
+    function limitMaximumSelection($dropDown, listName, maxSelection) {
+        if ($dropDown.multiselect("widget").find("input:checked").length > maxSelection) {
+            displayAlertBox("You can only select maximum " + maxSelection + " " + listName);
+            return false;
+        }
+        else { return true; }
+    }
+
+    //$alPhoneModelsList.enabled = false;
+    //$alSubModelsList.enabled = false;
+    //$alCarriersList.enabled = false;
+
+    $(".pretty-dropdown").multiselect().multiselectfilter();
+
+    $alBrandsList.multiselect({
+        selectedList: 3,
+        noneSelectedText: "Please select brand(s)",
+        click: function (e) {
+            limitMaximumSelection($alBrandsList, "Brands", 5);
+        },
+        close: function () {
+            var doPopulate = limitMaximumSelection($alBrandsList, "Brands", 5);
+            if (doPopulate) alPopulateDropwDown($(this));
+        }
+    });
+    $alBrandsList.multiselect("uncheckAll");
+
+    $alPhoneModelsList.multiselect({
+        noneSelectedText: "Please select model(s)",
+        selectedList: 2,
+        close: function () { alPopulateDropwDown($(this)); }
+    });
+    $alPhoneModelsList.multiselect("disable");
+
+    $alSubModelsList.multiselect({
+        noneSelectedText: "Please select sub-model(s)",
+        selectedList: 1
+    });
+    $alSubModelsList.multiselect("disable");
+
+    $alCountriesList.multiselect({
+        selectedList: 3,
+        noneSelectedText: "Please select country",
+        click: function (e) {
+            limitMaximumSelection($alCountriesList, "Countries", 5);
+        },
+        close: function () {
+            var doPopulate = limitMaximumSelection($alCountriesList, "Countries", 5);
+            if (doPopulate) alPopulateDropwDown($(this));
+        }
+    });
+    $alCountriesList.multiselect("uncheckAll");
+
+    $alCarriersList.multiselect({
+        noneSelectedText: "Please select carrier(s)",
+        selectedList: 2
+    });
+    $alCarriersList.multiselect("disable");
+
+    $alCompatibility.multiselect({
+        noneSelectedText: "Please select Network Compatiblity",
+        multiple: false,
+        selectedList: 1
+    });
+
+    function getValues($sel) {
+        var array_of_checked_values = $sel.multiselect("getChecked").map(function () { return this.value; }).get();
+        return array_of_checked_values;
+    }
+
+    var alPopulateDropwDown = function (selector) {
+
+        var $curSelector = selector;
+        var array_of_checked_values = getValues($curSelector);
+
+        var selectedValues = array_of_checked_values.join("|");
+
+        var options;
+
+        var controllerActionURL = $curSelector.attr("target");
+        var dataToSent = $curSelector.attr("datatosent");
+        var $childSelector = $("#" + $curSelector.attr("selectorId"));
+
+        if (selectedValues.length == 0) {
+            $childSelector.multiselect("uncheckAll").multiselect("disable");
+            return;
+        }
+
+        if ($curSelector.attr("id") == $alBrandsList.attr("id")) {
+            $alPhoneModelsList.multiselect("uncheckAll").multiselect("disable");
+            $alSubModelsList.multiselect("uncheckAll").multiselect("disable");
+            options = { url: controllerActionURL, dataType: 'json', type: 'POST', data: { brand: selectedValues } }
+        }
+        else if ($curSelector.attr("id") == $alPhoneModelsList.attr("id")) {
+            options = { url: controllerActionURL, dataType: 'json', type: 'POST', data: { phoneModel: selectedValues } }
+        }
+        else if ($curSelector.attr("id") == $alCountriesList.attr("id")) {
+            options = { url: controllerActionURL, dataType: 'json', type: 'POST', data: { country: selectedValues } }
+        }
+
+        $childSelector.empty();
+
+        $.ajax(options).done(function (returnedData) {
+
+            //console.log(returnedData);
+
+            if (returnedData.length <= 0) {
+                $childSelector.multiselect("uncheckAll").multiselect("disable");
+                return;
+            };
+
+            var strGroup = "";
+            var blnFirstIteration = true;
+            var strHTML = "";
+
+            $.each(returnedData, function (i, item) {
+
+                if (strGroup != item.Group) {
+                    if (strGroup != "") strHTML += '</optgroup>';
+                    strGroup = item.Group;
+                    strHTML += '<optgroup label="' + strGroup + '">';
+                }
+                strHTML += '<option value="' + item.Value + '">' + item.Text + '</option>';
+            });
+            strHTML += '</optgroup>';
+
+            $childSelector.append(strHTML);
+
+            sortAscending($childSelector.attr("id"));
+            $childSelector.multiselect("refresh");
+            $childSelector.multiselect("enable").multiselect("uncheckAll");
+        });
+
+        return false;
+    }
+
+    var doAdvanceLookup = function () {
+        if (!isReadyToSearchAdv()) return;
+
+        getValuesForRoute()
+        //var myURL = "/AdvanceLookup/Search/?phones=" + phones + "&submodels=" + subModels + "&carriers=" + carriers + "&compatability=" + compt + "&full=" + isFullChecked;
+        var myURL = "/AdvanceLookup/Search/";
+
+        showLoadingImage("#advanceLookup");
+
+        $.ajax({
+            url: myURL,
+            type: 'POST',
+            dataType: "html",
+            data: { phones: devicesToBeSent, submodels: selectedSubModels, carriers: selectedCarriers, compatability: selectedCompatability, full: isFullChecked, subModelSelected: isSubModelSelected },
+            success: function (returnedData) {
+                //console.log(returnedData);
+                //$("#advanceLookup").text(JSON.stringify(returnedData));
+
+                var $target = $("#advanceLookup");
+                var $newHtml = $(returnedData);
+                $target.html($newHtml);
+                $newHtml.effect("highlight");
+                hideLoadingImage("#advanceLookup");
+
+                if (!$target.is(":visible")) $target.slideDown();
+                setToolTip();
+            },
+            error: function (request, status, error) {
+                //displayAlertBox(request.responseText);
+                displayAlertBox(error);
+                hideLoadingImage("#advanceLookup");
+            }
+        });
+
+        return false;
+    };
+
+
+    function isReadyToSearchAdv() {
+        var ready = true;
+        var msg = "";
+
+        var isBrandSelected = getValues($alBrandsList).length > 0 ? true : false;
+        var isDeviceSelected = getValues($alPhoneModelsList).length > 0 ? true : false;
+        var isCountrySelected = getValues($alCountriesList).length > 0 ? true : false;
+        var isCarrierSelected = getValues($alCarriersList).length > 0 ? true : false;
+        var isCompatability = getValues($alCompatibility).length > 0 ? true : false;
+
+        // Checking to see if all parameters for device are properly selected
+        if (!isBrandSelected) {
+            msg = "Please choose a Brand, Model and Sub-Model (if applicable)";
+            ready = false;
+        }
+        else if (!isDeviceSelected) {
+            msg = "Please choose a Model and Sub-Model (if applicable)";
+            ready = false;
+        }
+
+        // Checking to see if all parameters for carrier are properly selected
+        if (!isCountrySelected) {
+            msg += "<br>Please choose a Country and a Carrier";
+            ready = false;
+        }
+        else if (!isCarrierSelected) {
+            msg += "<br>Please choose a Carrier";
+            ready = false;
+        }
+
+        //Checking to see if isCompatability selected
+        if (!isCompatability) {
+            msg += "<br>Please choose a Network Compatibility option";
+            ready = false;
+        }
+
+        if (!ready) displayAlertBox(msg);
+        return ready;
+    }
+
+    var resetAdvanceLookup = function () {
+        $(".pretty-dropdown").multiselect("uncheckAll");
+        $alPhoneModelsList.multiselect("disable");
+        $alSubModelsList.multiselect("disable");
+        $alCarriersList.multiselect("disable");
+        $alCompatibility.multiselect("refresh");
+    };
+
+    $(".body-content").on("click", "#alReset", resetAdvanceLookup);
+    $(".body-content").on("click", "#alMatchFrequencies", doAdvanceLookup);
+    $(".body-content").on("click", ".pagedListAdv a", getPageAdv);
+});
